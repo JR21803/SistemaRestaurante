@@ -9,8 +9,6 @@ class Invoice extends Model
 {
     use HasFactory;
 
-    protected $table = 'invoices'; // because migration is singular
-
     protected $fillable = [
         'order_id',
         'subtotal',
