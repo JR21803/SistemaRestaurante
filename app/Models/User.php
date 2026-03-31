@@ -29,4 +29,14 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+public function client()
+{
+    return $this->hasOne(Client::class);
+}
+
+public function employee()
+{
+    return $this->hasOne(Employee::class);
+}
 }
