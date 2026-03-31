@@ -4,15 +4,23 @@ El presente proyecto es la resolución de un problema de gestión de restaurante
 
 ## Instrucciones de levantamiento
 
-1. Clonar el repositorio
+1. Clonar el repositorio y abrir la carpeta
+git clone https://github.com/JR21803/SistemaRestaurante
+
+cd SistemaRestaurante
 
 2. Instalar dependencias
 
-npm install
+composer install
 
 3. Configurar el entorno desde el archivo .env
 
+cp .env.example .env 
+php artisan key:generate
+
+
 4. Configurar la base de datos desde el archivo .env
+
 
 5. Ejecutar migraciones y seeders
 
