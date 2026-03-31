@@ -25,13 +25,17 @@ class ClientSeeder extends Seeder
         ];
 
         foreach ($users as $data) {
-            $user = User::create($data);
+            $user = User::firstOrCreate(['email' => $data['email']], $data);
 
             Client::create([
                 'user_id' => $user->id,
                 'phone_number' => fake()->phoneNumber(),
                 'address' => fake()->address(),
             ]);
+
+            $user->assignRole('cliente');
         }
+
+        
     }
 }

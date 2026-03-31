@@ -31,5 +31,10 @@ php artisan migrate --seed
 php artisan test
 
 
+5. Borrar la base de datos y migraciones, y volver a ejecutar los seeders
+
+php artisan migrate:fresh --seed
+
+
 ## Usuarios de prueba
 sdswd

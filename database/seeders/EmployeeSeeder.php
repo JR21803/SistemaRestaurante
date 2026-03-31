@@ -14,24 +14,28 @@ class EmployeeSeeder extends Seeder
         $users = [
             [
                 'name' => 'Luis Martinez',
-                'email' => 'luis@example.com',
+                'email' => 'luisEmpleado@example.com',
                 'password' => Hash::make('password'),
             ],
             [
                 'name' => 'Maria Hernandez',
-                'email' => 'maria@example.com',
+                'email' => 'mariaEmpleado@example.com',
                 'password' => Hash::make('password'),
             ]
         ];
 
         foreach ($users as $data) {
-            $user = User::create($data);
+            $user = User::firstOrCreate(['email' => $data['email']], $data);
 
             Employee::create([
                 'user_id' => $user->id,
                 'phone_number' => fake()->phoneNumber(),
                 'salary' => rand(400, 800),
             ]);
+
+            $user->assignRole('empleado');
         }
+
+        
     }
 }
