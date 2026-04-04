@@ -37,4 +37,11 @@ php artisan migrate:fresh --seed
 
 
 ## Usuarios de prueba
-sdswd
+
+admin: adminRestaurante@example.com // password
+
+Empleado: luisEmpleado@example.com // password
+mariaEmpleado@example.com // password
+
+Cliente: juan@example.com // password
+ana@example.com // password
