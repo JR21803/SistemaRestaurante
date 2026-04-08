@@ -53,6 +53,7 @@ composer install
 ### 3. Configurar el entorno 
 
 cp .env.example .env 
+
 php artisan key:generate
 
 
@@ -83,3 +84,11 @@ mariaEmpleado@example.com // password
 
 Cliente: juan@example.com // password
 ana@example.com // password
+
+
+## Integrantes
+- José Avilés
+- Carlos Cruz
+- Samuel Llanes
+- Samuel Merino
+- Diego Viscarra
