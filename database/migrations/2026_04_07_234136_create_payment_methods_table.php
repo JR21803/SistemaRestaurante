@@ -11,12 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('menus', function (Blueprint $table) {
+        Schema::create('payment_methods', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->string('name');
-            $table->text('description');
-            $table->boolean('active')->default(true); // campo para activar o desactivar el menú sin eliminarlo de la base de datos
+
+            $table->string('name'); // card, cash
+            $table->boolean('active')->default(true);
         });
     }
 
@@ -25,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('menus');
+        Schema::dropIfExists('payment_methods');
     }
 };

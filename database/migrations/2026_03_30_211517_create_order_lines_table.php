@@ -17,9 +17,17 @@ return new class extends Migration
             $table->unsignedBigInteger('order_id');
             $table->unsignedBigInteger('menu_plate_id');
             $table->unsignedInteger('amount');
-            $table->decimal('line_cost');
-            $table->foreign('order_id')->references('id')->on('orders');
-            $table->foreign('menu_plate_id')->references('id')->on('menu_plates');
+            $table->decimal('line_cost', 10, 2);
+            
+            $table->foreign('order_id')
+                  ->references('id')
+                  ->on('orders')
+                  ->onDelete('cascade');
+
+            $table->foreign('menu_plate_id')
+                  ->references('id')
+                  ->on('menu_plates')
+                  ->onDelete('cascade');
         });
     }
 

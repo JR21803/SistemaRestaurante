@@ -15,11 +15,14 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('order_id');
-            $table->decimal('subtotal');
-            $table->decimal('taxes');
-            $table->decimal('total');
-
-            $table->foreign('order_id')->references('id')->on('orders');
+            $table->decimal('subtotal', 10, 2);
+            $table->decimal('taxes', 10, 2);
+            $table->decimal('total', 10, 2);
+            
+            $table->foreign('order_id')
+                  ->references('id')
+                  ->on('orders')
+                  ->onDelete('cascade');
         });
     }
 
@@ -28,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('invoice');
+        Schema::dropIfExists('invoices');
     }
 };

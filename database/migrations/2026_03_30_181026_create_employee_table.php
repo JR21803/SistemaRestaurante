@@ -16,8 +16,12 @@ return new class extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('user_id');
             $table->string('phone_number');
-            $table->decimal('salary');
-            $table->foreign('user_id')->references('id')->on('users');
+            $table->decimal('salary', 10, 2); // ✅ precisión correcta
+
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade'); // 🔥 mejora pro
         });
     }
 
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('employee');
+        Schema::dropIfExists('employees'); // ✅ corregido
     }
 };

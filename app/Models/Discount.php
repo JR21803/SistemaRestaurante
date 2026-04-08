@@ -11,8 +11,11 @@ class Discount extends Model
 
     protected $fillable = [
         'name',
+        'type',
         'percent',
-        'description',
+        'amount',
+        'min_total',
+        'description'
     ];
 
     public function menuPlates()

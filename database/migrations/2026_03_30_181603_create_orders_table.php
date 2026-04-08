@@ -16,9 +16,24 @@ return new class extends Migration
             $table->timestamps();
             $table->unsignedBigInteger('client_id');
             $table->unsignedBigInteger('employee_id');
-            $table->string('state')->default('pendiente');
-            $table->foreign('client_id')->references('id')->on('clients');
-            $table->foreign('employee_id')->references('id')->on('employees');
+            $table->decimal('total', 10, 2); // para aplicarse a pagos y descuentos
+            $table->enum('status', [
+                'pending',
+                'preparing',
+                'ready',
+                'completed',
+                'cancelled' // Solo funciona si el pedido esta en pending
+            ])->default('pending');
+
+            $table->foreign('client_id')
+                  ->references('id')
+                  ->on('clients')
+                  ->onDelete('cascade');
+
+            $table->foreign('employee_id')
+                  ->references('id')
+                  ->on('employees')
+                  ->onDelete('cascade');
         });
     }
 

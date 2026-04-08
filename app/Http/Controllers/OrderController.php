@@ -7,68 +7,38 @@ use Illuminate\Http\Request;
 
 class OrderController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        $this->authorize('viewAny', Order::class);
+    public function index() { return Order::all(); }
 
-        $user = auth()->user();
-
-        if ($user->hasRole('admin')) {
-            return response()->json(Order::all());
-        } 
-
-        return response()->json(Order::where('user_id', $user->id)->get());
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        $this->authorize('create', Order::class);
-
-        $order = Order::create($request->all());
-
-        return response()->json($order, 201);
+        return Order::create($request->all());
     }
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(Order $order)
+    public function show($id)
     {
-        $this->authorize('view', $order);
-
-        return response()->json($order);
+        return Order::findOrFail($id);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, Order $order)
+    public function update(Request $request, $id)
     {
-        $this->authorize('update', $order);
-
+        $order = Order::findOrFail($id);
         $order->update($request->all());
-
-        return response()->json($order);
+        return $order;
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Order $order)
+    public function destroy($id)
     {
-        $this->authorize('delete', $order);
-
-        $order->delete();
-
-        return response()->json(['message' => 'Pedido eliminado']);
+        Order::destroy($id);
+        return ['message' => 'deleted'];
     }
 
-    //
+    public function details($id)
+    {
+        return ['message' => 'Detalles'];
+    }
 
+    public function addDetail($id, Request $request)
+    {
+        return ['message' => 'Detalle agregado'];
+    }
 }

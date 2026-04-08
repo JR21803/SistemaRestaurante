@@ -11,24 +11,27 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('plate_ingredients', function (Blueprint $table) {
+        Schema::create('payments', function (Blueprint $table) {
             $table->id();
             $table->timestamps();
-            $table->unsignedBigInteger('ingredient_id');
-            $table->unsignedBigInteger('plate_id');
+            $table->unsignedBigInteger('order_id');
+            $table->unsignedBigInteger('payment_method_id');
             $table->decimal('amount', 10, 2);
+            $table->enum('status', [
+                'pending',
+                'paid',
+                'failed'
+            ])->default('pending');
 
-            $table->foreign('ingredient_id')
+            $table->foreign('order_id')
                   ->references('id')
-                  ->on('ingredients')
+                  ->on('orders')
                   ->onDelete('cascade');
 
-            $table->foreign('plate_id')
+            $table->foreign('payment_method_id')
                   ->references('id')
-                  ->on('plates')
-                  ->onDelete('cascade');
-
-            $table->unique(['plate_id', 'ingredient_id']);
+                  ->on('payment_methods')
+                  ->onDelete('restrict');
         });
     }
 
@@ -37,6 +40,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('plate_ingredients'); 
+        Schema::dropIfExists('payments');
     }
 };

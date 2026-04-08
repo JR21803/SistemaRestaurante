@@ -12,7 +12,9 @@ class Order extends Model
     protected $fillable = [
         'client_id',
         'employee_id',
-        'state',
+        'total',
+        'status'
+    
     ];
 
     public function orderLines()

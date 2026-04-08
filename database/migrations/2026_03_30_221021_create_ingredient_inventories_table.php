@@ -15,10 +15,15 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('ingredient_id');
-            $table->decimal('amount');
+            $table->decimal('amount', 10, 2);
             $table->date('purchase_date');
             $table->date('expiration_date');
-            $table->decimal('unit_cost');
+            $table->decimal('unit_cost', 10, 2); 
+
+            $table->foreign('ingredient_id')
+                  ->references('id')
+                  ->on('ingredients')
+                  ->onDelete('cascade');
         });
     }
 

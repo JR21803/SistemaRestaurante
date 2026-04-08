@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('name');
             $table->string('category');
             $table->string('measurement_unit');
-            $table->string('description');
+            $table->text('description');
+            $table->decimal('stock', 10, 2)->default(0);
         });
     }
 

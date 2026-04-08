@@ -17,7 +17,11 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('phone_number');
             $table->string('address');
-            $table->foreign('user_id')->references('id')->on('users');
+
+            $table->foreign('user_id')
+                  ->references('id')
+                  ->on('users')
+                  ->onDelete('cascade');
         });
     }
 
@@ -26,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('client');
+        Schema::dropIfExists('clients');
     }
 };

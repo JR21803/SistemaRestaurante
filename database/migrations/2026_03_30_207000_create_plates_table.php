@@ -16,7 +16,13 @@ return new class extends Migration
             $table->timestamps();
             $table->string('name');
             $table->text('description');
-            $table->decimal('price');
+            $table->decimal('price', 10, 2); // precio del plato con precisión adecuada
+            $table->unsignedBigInteger('menu_id')->nullable(); // relación con menú (opcional)
+
+            $table->foreign('menu_id')
+                  ->references('id')
+                  ->on('menus')
+                  ->onDelete('set null');
         });
     }
 
