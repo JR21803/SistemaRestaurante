@@ -11,7 +11,10 @@ class PlateController extends Controller
 
     public function store(Request $request)
     {
-        return Plate::create($request->all());
+        $request->validate([
+            'name' => 'required|string',
+            'price' => 'required|numeric'
+        ]);
     }
 
     public function show($id)
@@ -31,4 +34,6 @@ class PlateController extends Controller
         Plate::destroy($id);
         return ['message' => 'deleted'];
     }
+
+    
 }

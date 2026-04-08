@@ -11,7 +11,14 @@ class OrderController extends Controller
 
     public function store(Request $request)
     {
-        return Order::create($request->all());
+        $request->validate([
+            'client_id' => 'required',
+            'employee_id' => 'required',
+            'total' => 'required',
+            'items' => 'required|array|min:1',
+        ]);
+
+        
     }
 
     public function show($id)

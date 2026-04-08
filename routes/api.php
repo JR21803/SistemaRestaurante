@@ -24,6 +24,9 @@ Route::post('/login', [AuthController::class, 'login']);
 Route::middleware('auth:sanctum')->post('/logout', [AuthController::class, 'logout']);
 Route::get('/profile', [AuthController::class, 'profile']);
 
+
+
+Route::middleware('auth:sanctum')->group(function () {
 /*
 |--------------------------------------------------------------------------
 | CUSTOMERS
@@ -118,3 +121,5 @@ Route::delete('/raw-material/{id}', [RawMaterialController::class, 'destroy']);
 |--------------------------------------------------------------------------
 */
 Route::post('/payments/process', [PaymentController::class, 'process']);
+
+});

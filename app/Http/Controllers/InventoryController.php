@@ -39,7 +39,13 @@ class InventoryController extends Controller
 
     public function destroy($id)
     {
-        IngredientInventory::destroy($id);
+
+        $inventory = IngredientInventory::find($id);
+        if (!$inventory) {
+            return response()->json(['error' => 'Inventario no encontrado'], 404);
+        }
+        
+        $inventory->delete();
 
         return [
             'message' => 'Inventario eliminado'

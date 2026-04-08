@@ -11,6 +11,18 @@ class CustomerController extends Controller
 
     public function store(Request $request)
     {
+        
+        $request->validate([
+            'user_id' => 'required|unique:clients,user_id',
+            'phone_number' => 'required',
+            'address' => 'required'
+        ]);
+
+        if (Client::where('user_id', $request->user_id)->exists()) {
+            return response()->json(['message' => 'User_id ya está registrado', 
+            'errors' => ['user_id' => ['El user_id ya está existe']]], 422);
+        }
+
         return Client::create($request->all());
     }
 
