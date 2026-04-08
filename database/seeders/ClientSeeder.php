@@ -9,33 +9,13 @@ use Illuminate\Support\Facades\Hash;
 
 class ClientSeeder extends Seeder
 {
-    public function run(): void
-    {
-        $users = [
-            [
-                'name' => 'Juan Perez',
-                'email' => 'juan@example.com',
-                'password' => Hash::make('password'),
-            ],
-            [
-                'name' => 'Ana Lopez',
-                'email' => 'ana@example.com',
-                'password' => Hash::make('password'),
-            ]
-        ];
 
-        foreach ($users as $data) {
-            $user = User::firstOrCreate(['email' => $data['email']], $data);
-
-            Client::create([
-                'user_id' => $user->id,
-                'phone_number' => fake()->phoneNumber(),
-                'address' => fake()->address(),
-            ]);
-
-            $user->assignRole('cliente');
-        }
-
-        
-    }
+public function run()
+{
+    Client::create([
+        'user_id' => 3,
+        'phone_number' => '77777777',
+        'address' => 'San Salvador'
+    ]);
+}
 }

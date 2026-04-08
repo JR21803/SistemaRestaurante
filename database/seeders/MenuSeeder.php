@@ -7,17 +7,11 @@ use Illuminate\Database\Seeder;
 
 class MenuSeeder extends Seeder
 {
-    public function run(): void
-    {
-        Menu::insert([
-            [
-                'name' => 'Main Menu',
-                'description' => 'Nuestro menú principal'
-            ],
-            [
-                'name' => 'Drinks',
-                'description' => 'Bevidas y jugos'
-            ]
-        ]);
-    }
+public function run()
+{
+    Menu::create([
+        'name' => 'Menu Ejecutivo',
+        'description' => 'Almuerzos'
+    ]);
+}
 }
