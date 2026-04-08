@@ -43,6 +43,7 @@ Un restaurante local enfrenta dificultades para llevar un control efectivo de la
 ### 1. Clonar el repositorio del proyecto
 
 git clone https://github.com/JR21803/SistemaRestaurante
+
 cd SistemaRestaurante
 
 ### 2. Instalar dependencias
