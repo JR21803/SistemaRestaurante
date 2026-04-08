@@ -11,7 +11,7 @@ use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\Ingredient;
 
-// BASADO EN MATRIZ DE PRUEBAS
+// MATRIZ DE PRUEBAS
 
 class ApiTest extends TestCase
 {
