@@ -79,11 +79,10 @@ php artisan migrate:fresh --seed
 
 admin: adminRestaurante@example.com // password
 
-Empleado: luisEmpleado@example.com // password
-mariaEmpleado@example.com // password
+Empleado: empleado@restaurante.com// password
 
-Cliente: juan@example.com // password
-ana@example.com // password
+
+Cliente: cliente@restaurante.com // password
 
 
 ## Integrantes
