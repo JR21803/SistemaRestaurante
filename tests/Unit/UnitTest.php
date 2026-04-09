@@ -59,7 +59,7 @@ class UnitTest extends TestCase
     public function test_37_plate_without_name()
     {
         Sanctum::actingAs($this->user);
-        $response = $this->postJson('/api/plates', [
+        $response = $this->postJson('/api/v1/plates', [
             'description' => 'Test',
             'price' => 10
         ]);
@@ -76,11 +76,11 @@ class UnitTest extends TestCase
             'total' => 25
         ]);
 
-        $this->postJson('/api/invoices', [
+        $this->postJson('/api/v1/invoices', [
             'order_id' => $order->id
         ]);
 
-        $response = $this->postJson('/api/invoices', [
+        $response = $this->postJson('/api/v1/invoices', [
             'order_id' => $order->id
         ]);
 
@@ -101,7 +101,7 @@ class UnitTest extends TestCase
     public function test_41_order_without_items()
     {
         Sanctum::actingAs($this->user);
-        $response = $this->postJson('/api/orders', [
+        $response = $this->postJson('/api/v1/orders', [
             'client_id' => 1,
             'employee_id' => 1,
             'total' => 25
@@ -113,7 +113,7 @@ class UnitTest extends TestCase
     public function test_42_discount_not_negative()
     {
         Sanctum::actingAs($this->user);
-        $response = $this->postJson('/api/orders/calculate-discount', [
+        $response = $this->postJson('/api/v1/orders/calculate-discount', [
             'total' => -10
         ]);
 
@@ -129,7 +129,7 @@ class UnitTest extends TestCase
             'total' => 50
         ]);
 
-        $response = $this->postJson('/api/payments/process', [
+        $response = $this->postJson('/api/v1/payments/process', [
             'order_id' => $order->id,
             'payment_method_id' => 1,
             'amount' => 10

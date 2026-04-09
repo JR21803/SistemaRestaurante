@@ -14,22 +14,22 @@ class UserSeeder extends Seeder
     {
         $admin = User::create([
             'name' => 'Administrador',
-            'email' => 'admin@test.com',
-            'password' => bcrypt('123456')
+            'email' => 'adminRestaurante@example.com',
+            'password' => bcrypt('password')
         ]);
         $admin->assignRole('admin');
 
         $empleado = User::create([
             'name' => 'Empleado',
-            'email' => 'empleado@test.com',
-            'password' => bcrypt('123456')
+            'email' => 'empleado@restaurante.com',
+            'password' => bcrypt('password')
         ]);
         $empleado->assignRole('empleado');
 
         $cliente = User::create([
             'name' => 'Cliente',
-            'email' => 'cliente@test.com',
-            'password' => bcrypt('123456')
+            'email' => 'cliente@restaurante.com',
+            'password' => bcrypt('password')
         ]);
         $cliente->assignRole('cliente');
     }

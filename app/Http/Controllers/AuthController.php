@@ -16,19 +16,23 @@ class AuthController extends Controller
             return response()->json(['error' => 'Credenciales incorrectas'], 401);
         }
 
+        $token = $user->createToken('auth_token')->plainTextToken;
+
         return response()->json([
-            'token' => 'fake-token',
+            'token' => $token,
             'user' => $user
         ]);
     }
 
-    public function profile()
+    public function profile(Request $request)
     {
-        return response()->json(['message' => 'Perfil']);
+        return response()->json($request->user());
     }
 
-    public function logout()
+    public function logout(Request $request)
     {
+        $request->user()->currentAccessToken()->delete();
+
         return response()->json(['message' => 'Logout']);
     }
 }

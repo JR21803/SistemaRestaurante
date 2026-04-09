@@ -51,7 +51,7 @@ class ApiTest extends TestCase
 
     public function test_01_login_success()
     {
-        $this->postJson('/api/login', [
+        $this->postJson('/api/v1/login', [
             'email' => 'admin@test.com',
             'password' => '123456'
         ])->assertSuccessful();
@@ -59,7 +59,7 @@ class ApiTest extends TestCase
 
     public function test_02_login_wrong_password()
     {
-        $this->postJson('/api/login', [
+        $this->postJson('/api/v1/login', [
             'email' => 'admin@test.com',
             'password' => 'wrong'
         ])->assertStatus(401);
@@ -67,7 +67,7 @@ class ApiTest extends TestCase
 
     public function test_03_login_email_not_found()
     {
-        $this->postJson('/api/login', [
+        $this->postJson('/api/v1/login', [
             'email' => 'fake@test.com',
             'password' => '123456'
         ])->assertStatus(401);
@@ -78,12 +78,12 @@ class ApiTest extends TestCase
 
         $this->actingAs($this->user);
 
-        $this->getJson('/api/profile')->assertSuccessful();
+        $this->getJson('/api/v1/profile')->assertSuccessful();
     }
 
     public function test_05_logout_without_token()
     {
-        $this->postJson('/api/logout')->assertStatus(401);
+        $this->postJson('/api/v1/logout')->assertStatus(401);
     }
 
     // Clientes
@@ -91,7 +91,7 @@ class ApiTest extends TestCase
     public function test_06_get_customers()
     {
         Sanctum::actingAs($this->user);
-        $this->getJson('/api/customers')->assertSuccessful();
+        $this->getJson('/api/v1/customers')->assertSuccessful();
     }
 
     public function test_07_create_customer()
@@ -107,7 +107,7 @@ class ApiTest extends TestCase
 
 
 
-        $this->postJson('/api/customers', [
+        $this->postJson('/api/v1/customers', [
             'user_id' => 2,
             'phone_number' => '888',
             'address' => 'Test'
@@ -118,7 +118,7 @@ class ApiTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $this->postJson('/api/customers', [
+        $this->postJson('/api/v1/customers', [
             'user_id' => 1,
             'phone_number' => '99990000',
             'address' => 'Test'
@@ -136,7 +136,7 @@ class ApiTest extends TestCase
     public function test_10_create_plate()
     {
         Sanctum::actingAs($this->user);
-        $this->postJson('/api/plates', [
+        $this->postJson('/api/v1/plates', [
             'name' => 'Pizza',
             'description' => 'Pizza italiana',
             'price' => 10
@@ -146,7 +146,7 @@ class ApiTest extends TestCase
     public function test_11_create_plate_without_token()
     {
 
-        $this->postJson('/api/plates', [
+        $this->postJson('/api/v1/plates', [
             'name' => 'Pizza',
             'description' => 'Pizza italiana',
             'price' => 10
@@ -156,7 +156,7 @@ class ApiTest extends TestCase
     public function test_12_create_plate_without_price()
     {
         Sanctum::actingAs($this->user);
-        $this->postJson('/api/plates', [
+        $this->postJson('/api/v1/plates', [
             'name' => 'Pizza',
             'description' => 'Test'
         ])->assertStatus(422);
@@ -175,7 +175,7 @@ class ApiTest extends TestCase
             'price' => 10
         ]);
 
-        $this->postJson('/api/orders', [
+        $this->postJson('/api/v1/orders', [
             'client_id' => 1,
             'employee_id' => 1,
             'total' => 25,
@@ -200,18 +200,18 @@ class ApiTest extends TestCase
             'status' => 'pending'
         ]);
 
-        $this->getJson("/api/orders/$order->id")->assertSuccessful();
+        $this->getJson("/api/v1/orders/$order->id")->assertSuccessful();
     }
 
     public function test_15_get_order_not_found()
     {
         Sanctum::actingAs($this->user);
-        $this->getJson('/api/orders/999')->assertStatus(404);
+        $this->getJson('/api/v1/orders/999')->assertStatus(404);
     }
 
     public function test_16_get_orders_no_permission()
     {
-        $this->getJson('/api/orders')->assertStatus(401); // sin roles
+        $this->getJson('/api/v1/orders')->assertStatus(401); // sin roles
     }
 
     // Facturas
@@ -226,7 +226,7 @@ class ApiTest extends TestCase
             'status' => 'pending'
         ]);
 
-        $this->postJson('/api/invoices', [
+        $this->postJson('/api/v1/invoices', [
             'order_id' => $order->id
         ])->assertSuccessful();
     }
@@ -234,13 +234,13 @@ class ApiTest extends TestCase
     public function test_18_get_invoice()
     {
         Sanctum::actingAs($this->user);
-        $this->getJson('/api/invoice/1')->assertStatus(404);
+        $this->getJson('/api/v1/invoice/1')->assertStatus(404);
     }
 
     public function test_19_invoice_without_order()
     {
         Sanctum::actingAs($this->user);
-        $this->postJson('/api/invoices', [])
+        $this->postJson('/api/v1/invoices', [])
             ->assertStatus(422);
     }
 
@@ -250,12 +250,12 @@ class ApiTest extends TestCase
     {
         Sanctum::actingAs($this->user);
 
-        $this->getJson('/api/menus')->assertSuccessful();
+        $this->getJson('/api/v1/menus')->assertSuccessful();
     }
 
     public function test_21_create_menu_without_token()
     {
-        $this->postJson('/api/menus', [
+        $this->postJson('/api/v1/menus', [
             'name' => 'Menu',
             'description' => 'Menu principal'
         ])->assertStatus(401);
@@ -266,13 +266,13 @@ class ApiTest extends TestCase
     public function test_22_get_inventory()
     {
         Sanctum::actingAs($this->user);
-        $this->getJson('/api/inventory')->assertSuccessful();
+        $this->getJson('/api/v1/inventory')->assertSuccessful();
     }
 
     public function test_23_delete_inventory_not_found()
     {
         Sanctum::actingAs($this->user);
-        $this->deleteJson('/api/inventory/999')->assertStatus(404);
+        $this->deleteJson('/api/v1/inventory/999')->assertStatus(404);
     }
 
     // Materia prima
@@ -280,13 +280,13 @@ class ApiTest extends TestCase
     public function test_24_get_raw_material()
     {
         Sanctum::actingAs($this->user);
-        $this->getJson('/api/raw-material/1')->assertStatus(404);
+        $this->getJson('/api/v1/raw-material/1')->assertStatus(404);
     }
 
     public function test_25_update_raw_material_not_found()
     {
         Sanctum::actingAs($this->user);
-        $this->putJson('/api/raw-material/999', [])
+        $this->putJson('/api/v1/raw-material/999', [])
             ->assertStatus(404);
     }
 
@@ -295,7 +295,7 @@ class ApiTest extends TestCase
     public function test_26_discount_minimum()
     {
         Sanctum::actingAs($this->user);
-        $this->postJson('/api/orders/calculate-discount', [
+        $this->postJson('/api/v1/orders/calculate-discount', [
             'total' => 30
         ])->assertSuccessful();
     }
@@ -303,7 +303,7 @@ class ApiTest extends TestCase
     public function test_27_discount_not_applied()
     {
         Sanctum::actingAs($this->user);
-        $this->postJson('/api/orders/calculate-discount', [
+        $this->postJson('/api/v1/orders/calculate-discount', [
             'total' => 10
         ])->assertSuccessful();
     }
@@ -311,7 +311,7 @@ class ApiTest extends TestCase
     public function test_28_discount_percentage()
     {
         Sanctum::actingAs($this->user);
-        $this->postJson('/api/orders/calculate-discount', [
+        $this->postJson('/api/v1/orders/calculate-discount', [
             'total' => 50
         ])->assertSuccessful();
     }
@@ -319,7 +319,7 @@ class ApiTest extends TestCase
     public function test_29_discount_special_date()
     {
         Sanctum::actingAs($this->user);
-        $this->postJson('/api/orders/calculate-discount', [
+        $this->postJson('/api/v1/orders/calculate-discount', [
             'total' => 30
         ])->assertSuccessful();
     }
@@ -327,7 +327,7 @@ class ApiTest extends TestCase
     public function test_30_discount_invalid_date()
     {
         Sanctum::actingAs($this->user);
-        $this->postJson('/api/orders/calculate-discount', [
+        $this->postJson('/api/v1/orders/calculate-discount', [
             'total' => 5
         ])->assertSuccessful();
     }
@@ -344,7 +344,7 @@ class ApiTest extends TestCase
             'status' => 'pending'
         ]);
 
-        $this->postJson('/api/payments/process', [
+        $this->postJson('/api/v1/payments/process', [
             'order_id' => $order->id,
             'payment_method_id' => 1,
             'amount' => 25
@@ -360,7 +360,7 @@ class ApiTest extends TestCase
             'total' => 25
         ]);
 
-        $this->postJson('/api/payments/process', [
+        $this->postJson('/api/v1/payments/process', [
             'order_id' => $order->id,
             'payment_method_id' => 1,
             'amount' => 10
@@ -370,7 +370,7 @@ class ApiTest extends TestCase
     public function test_33_payment_valid_method()
     {
         Sanctum::actingAs($this->user);
-        $this->postJson('/api/payments/process', [
+        $this->postJson('/api/v1/payments/process', [
             'order_id' => 999,
             'payment_method_id' => 1,
             'amount' => 25
@@ -380,7 +380,7 @@ class ApiTest extends TestCase
     public function test_34_payment_order_not_found()
     {
         Sanctum::actingAs($this->user);
-        $this->postJson('/api/payments/process', [
+        $this->postJson('/api/v1/payments/process', [
             'order_id' => 999,
             'payment_method_id' => 1,
             'amount' => 25
