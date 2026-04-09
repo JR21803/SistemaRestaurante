@@ -14,5 +14,11 @@ public function run()
         'description' => 'Grande',
         'price' => 8
     ]);
+
+    Plate::create([
+        'name' => 'Pizza',
+        'description' => 'Grande',
+        'price' => 16
+    ]);
 }
 }
