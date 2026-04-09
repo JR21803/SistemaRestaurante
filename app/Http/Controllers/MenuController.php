@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Menu;
+use App\Models\Order;
 use Illuminate\Http\Request;
 
 class MenuController extends Controller
@@ -14,6 +15,7 @@ class MenuController extends Controller
 
     public function store(Request $request)
     {
+        $this->authorize('create', Menu::class);
         return Menu::create($request->all());
     }
 
