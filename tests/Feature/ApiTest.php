@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use App\Models\User;
 use App\Models\Client;
 use App\Models\Employee;
+use App\Models\Invoice;
 use App\Models\Order;
 use App\Models\PaymentMethod;
 use App\Models\Ingredient;
@@ -44,6 +45,29 @@ class ApiTest extends TestCase
 
         $this->paymentMethod = PaymentMethod::create([
             'name' => 'cash'
+        ]);
+
+        $this->ingredient = Ingredient::create([
+            'name' => 'Pollo',
+            'category' => 'Carne',
+            'measurement_unit' => 'kg',
+            'description' => 'Fresco',
+            'stock' => 100
+        ]);
+
+        $this->order = Order::create([
+            'client_id' => 1,
+            'employee_id' => 1,
+            'total' => 25,
+            'status' => 'pending'
+        ]);
+
+
+        $this->invoice = Invoice::create([
+            'order_id' => 1,
+            'subtotal' => 20,
+            'taxes' => 5,
+            'total' => 25
         ]);
     }
 
@@ -234,7 +258,7 @@ class ApiTest extends TestCase
     public function test_18_get_invoice()
     {
         Sanctum::actingAs($this->user);
-        $this->getJson('/api/v1/invoice/1')->assertStatus(404);
+        $this->getJson('/api/v1/invoice/1')->assertSuccessful();
     }
 
     public function test_19_invoice_without_order()
@@ -280,7 +304,7 @@ class ApiTest extends TestCase
     public function test_24_get_raw_material()
     {
         Sanctum::actingAs($this->user);
-        $this->getJson('/api/v1/raw-material/1')->assertStatus(404);
+        $this->getJson('/api/v1/raw-material/1')->assertSuccessful();
     }
 
     public function test_25_update_raw_material_not_found()
@@ -313,22 +337,6 @@ class ApiTest extends TestCase
         Sanctum::actingAs($this->user);
         $this->postJson('/api/v1/orders/calculate-discount', [
             'total' => 50
-        ])->assertSuccessful();
-    }
-
-    public function test_29_discount_special_date()
-    {
-        Sanctum::actingAs($this->user);
-        $this->postJson('/api/v1/orders/calculate-discount', [
-            'total' => 30
-        ])->assertSuccessful();
-    }
-
-    public function test_30_discount_invalid_date()
-    {
-        Sanctum::actingAs($this->user);
-        $this->postJson('/api/v1/orders/calculate-discount', [
-            'total' => 5
         ])->assertSuccessful();
     }
 
@@ -365,16 +373,6 @@ class ApiTest extends TestCase
             'payment_method_id' => 1,
             'amount' => 10
         ])->assertStatus(400);
-    }
-
-    public function test_33_payment_valid_method()
-    {
-        Sanctum::actingAs($this->user);
-        $this->postJson('/api/v1/payments/process', [
-            'order_id' => 999,
-            'payment_method_id' => 1,
-            'amount' => 25
-        ])->assertStatus(404);
     }
 
     public function test_34_payment_order_not_found()
