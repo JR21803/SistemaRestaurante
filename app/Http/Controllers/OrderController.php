@@ -24,55 +24,47 @@ class OrderController extends Controller
                 'items.*.amount' => 'required|integer|min:1',
             ]);
 
+        $itemIds = collect($validated['items'])->pluck('item_id');
 
+        if ($itemIds->isEmpty()) {
+            return response()->json(['error' => 'El pedido debe contener al menos un objeto'], 422);
+        }
 
-                foreach ($validated['items'] as $itemData) {
+        $plates = Plate::whereIn('id', $itemIds)->get()->keyBy('id');
 
+        $total = 0;
+        $orderLinesData = [];
 
+        foreach ($validated['items'] as $itemData) {
+            $item = $plates[$itemData['item_id']] ?? null;
 
-                    $itemIds = collect($validated['items'])->pluck('item_id');
+            if (!$item) {
+                abort(404, 'Plato no encontrado');
+            }
 
+            $lineCost = $item->price * $itemData['amount'];
+            $total += $lineCost;
 
+            $orderLinesData[] = [
+                'plate_id' => $item->id, 
+                'amount' => $itemData['amount'],
+                'line_cost' => $lineCost,
+            ];
+        }
 
-                    $plates = Plate::whereIn('id', $itemIds)->get()->keyBy('id');
+        $order = Order::create([
+            'client_id' => $validated['client_id'],
+            'employee_id' => $validated['employee_id'],
+            'total' => $total,
+        ]);
 
-                    $total = 0;
-                    $orderLinesData = [];
+        foreach ($orderLinesData as &$line) {
+            $line['order_id'] = $order->id;
+        }
 
-                    foreach ($validated['items'] as $itemData) {
-                        $item = $plates[$itemData['item_id']] ?? null;
+        OrderLine::insert($orderLinesData);
 
-                        if (!$item) {
-                            abort(404, 'Plato no encontrado');
-                        }
-
-                        $lineCost = $item->price * $itemData['amount'];
-                        $total += $lineCost;
-
-                        $orderLinesData[] = [
-                            'menu_plate_id' => $item->id,
-                            'amount' => $itemData['amount'],
-                            'line_cost' => $lineCost,
-                        ];
-                    }
-
-
-                    $order = Order::create([
-                        'client_id' => $validated['client_id'],
-                        'employee_id' => $validated['employee_id'],
-                        'total' => $total,
-                    ]);
-
-
-                    foreach ($orderLinesData as &$line) {
-                        $line['order_id'] = $order->id;
-                    }
-                    unset($line); 
-
-                    OrderLine::insert($orderLinesData);
-                }
-
-            return response()->json([
+        return response()->json([
             'order_id' => $order->id,
             'client_id' => $order->client_id,
             'employee_id' => $order->employee_id,

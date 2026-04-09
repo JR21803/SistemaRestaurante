@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Invoice;
 use Illuminate\Http\Request;
+use App\Models\Order;
 
 class InvoiceController extends Controller
 {
@@ -15,12 +16,20 @@ class InvoiceController extends Controller
         $request->validate([
             'order_id' => 'required|exists:orders,id|unique:invoices,order_id',
         ]);
+
+        $order = Order::findOrFail($request->order_id);
+
+        if (!$order) {
+            return response()->json(['error' => 'Inventario no encontrado'], 404);
+        }
+
+        
         
         return Invoice::create([
             'order_id' => $request->order_id,
-            'subtotal' => 20,
-            'taxes' => 5,
-            'total' => 25
+            'subtotal' => $order->total,
+            'taxes' => $request->taxes,
+            'total' => $order->total + $request->taxes
         ]);
 
         

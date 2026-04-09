@@ -19,15 +19,23 @@ class ApiTest extends TestCase
 {
     use RefreshDatabase;
 
+
+
     protected function setUp(): void
     {
+
         parent::setUp();
+
+
+        $this->seed(\Database\Seeders\PermissionSeeder::class);
 
         $this->user = User::create([
             'name' => 'Admin',
             'email' => 'admin@test.com',
             'password' => bcrypt('123456')
         ]);
+
+        $this->user->assignRole('admin');
 
         
 
@@ -69,6 +77,7 @@ class ApiTest extends TestCase
             'taxes' => 5,
             'total' => 25
         ]);
+
     }
 
     // Autenticación
@@ -202,13 +211,11 @@ class ApiTest extends TestCase
         $this->postJson('/api/v1/orders', [
             'client_id' => 1,
             'employee_id' => 1,
-            'total' => 25,
             'status' => 'pending',
             'items' => [
                 [
-                    'plate_id' => $plate->id,
-                    'quantity' => 2,
-                    'price' => 10
+                    'item_id' => $plate->id,
+                    'amount' => 2,
                 ]
             ]
         ])->assertSuccessful();
@@ -251,7 +258,8 @@ class ApiTest extends TestCase
         ]);
 
         $this->postJson('/api/v1/invoices', [
-            'order_id' => $order->id
+            'order_id' => $order->id,
+            'taxes' => 25
         ])->assertSuccessful();
     }
 

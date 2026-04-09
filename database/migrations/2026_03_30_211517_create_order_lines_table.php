@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->unsignedBigInteger('order_id');
-            $table->unsignedBigInteger('menu_plate_id');
+            $table->unsignedBigInteger('plate_id');
             $table->unsignedInteger('amount');
             $table->decimal('line_cost', 10, 2);
             
@@ -24,9 +24,9 @@ return new class extends Migration
                   ->on('orders')
                   ->onDelete('cascade');
 
-            $table->foreign('menu_plate_id')
+            $table->foreign('plate_id')
                   ->references('id')
-                  ->on('menu_plates')
+                  ->on('plates')
                   ->onDelete('cascade');
         });
     }

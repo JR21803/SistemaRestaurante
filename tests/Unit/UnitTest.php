@@ -21,6 +21,8 @@ class UnitTest extends TestCase
     {
         parent::setUp();
 
+        $this->seed(\Database\Seeders\PermissionSeeder::class);
+
         $this->user = User::create([
             'name' => 'Admin',
             'email' => 'admin@test.com',
@@ -42,6 +44,8 @@ class UnitTest extends TestCase
         $this->paymentMethod = PaymentMethod::create([
             'name' => 'cash'
         ]);
+
+        $this->user->assignRole('admin');
     }
 
     public function test_35_order_default_status()
@@ -77,7 +81,8 @@ class UnitTest extends TestCase
         ]);
 
         $this->postJson('/api/v1/invoices', [
-            'order_id' => $order->id
+            'order_id' => $order->id,
+            'taxes' => 25
         ]);
 
         $response = $this->postJson('/api/v1/invoices', [
