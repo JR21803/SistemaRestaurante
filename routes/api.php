@@ -53,6 +53,7 @@ Route::prefix('v1')->group(function () {
         Route::put('/plates/{id}', [PlateController::class, 'update']);
         Route::delete('/plates/{id}', [PlateController::class, 'destroy']);
 
+
         /*
 |--------------------------------------------------------------------------
 | ORDERS
@@ -70,7 +71,6 @@ Route::prefix('v1')->group(function () {
 |--------------------------------------------------------------------------
 */
         Route::get('/orders/{id}/details', [OrderController::class, 'details']);
-        Route::post('/orders/{id}/details', [OrderController::class, 'addDetail']);
 
         /*
 |--------------------------------------------------------------------------

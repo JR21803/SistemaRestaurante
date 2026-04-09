@@ -23,6 +23,6 @@ class OrderLine extends Model
 
     public function menuPlate()
     {
-        return $this->belongsTo(MenuPlate::class);
+        return $this->belongsTo(Plate::class);
     }
 }
